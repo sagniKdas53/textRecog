@@ -1,0 +1,17 @@
+{
+  "name": "imgprocessjs",
+  "version": "1.0.0",
+  "description": "process image in browser to feed into utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tesseract"
+  ],
+  "author": "Sagnik Das",
+  "license": "ISC",
+  "dependencies": {
+    "tesseract.js": "^2.1.4"
+  }
+}

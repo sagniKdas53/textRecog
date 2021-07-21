@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8" />
+  <title>Image RecogTest</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  <!--<script src="node_modules/tesseract.js/dist/tesseract.min.js"></script>-->
+  <script src="https://unpkg.com/tesseract.js@2.0.0/dist/tesseract.min.js" integrity="sha384-MTEb82ufpBJ2VCTmPZlD/+vgiT5z6zmOwqU/uDO9IobYm9xCOUEN0WH3czf6ppl8" crossorigin="anonymous"></script>
+  <script async src="https://docs.opencv.org/3.4/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+  <script src="new.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="navbar-brand" href="#">Detector: </div>
+      <div class="nav-item" id="statusCV" style="width: 100%">OpenCV.js is loading</div>
+      <div class="nav-item" id="statusTS" style="width: 100%">Tesseract.js worker not loaded</div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-4 flex-column">
+        <div>File input</div>
+        <img id="main_image" class="img-fluid" alt="No Image" />
+        <input type="file" id="fileInput" name="file" />
+      </div>
+      <div class="col-4 flex-column">
+        <div>Canvas Output</div>
+        <canvas id="canvasOutput" class="img-fluid"></canvas>
+        <div class="btn-group mb-3" role="toolbar">
+          <!--The vars are not accessavle-->
+
+          <button type="button" class="btn btn-outline-primary" onclick="preProcessImage()()">Crop</button>
+          <button type="button" class="btn btn-outline-primary" onclick="doDetection()()">Detect</button>
+          <button type="button" class="btn btn-outline-primary" onclick="DownloadCanvasAsImage()">Save</button>
+          <button type="button" class="btn btn-outline-primary" onclick="FunctionThatGetsText()">Extract Text</button>
+        </div>
+        <div class="input-group">
+          <button class="btn btn-outline-primary" onclick="cropInputImageParameterized()">Crop</button>
+          <input type="text" id="XText" placeholder="X" aria-label="X" class="form-control">
+          <input type="text" id="YText" placeholder="Y" aria-label="Y" class="form-control">
+          <input type="text" id="WText" placeholder="W" aria-label="W" class="form-control">
+          <input type="text" id="HText" placeholder="H" aria-label="H" class="form-control">
+        </div>
+      </div>
+      <div class="col-4 flex-column">
+        <div>Text that is extracted:</div>
+        <textarea id="textarea" class="form-control mb-3" style="min-width: 100%;min-height: 50%">Text to be changed</textarea>
+        <div class="spinner-border d-none" id="spinner" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+          aria-expanded="false" aria-controls="collapseExample">
+          Show Templates
+        </button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          The Templates:
+          <ul class="list-inline">
+            <li class="list-inline-item">
+              <input type="checkbox" id="back_button_cb" name="back_button_cb" checked="checked" />
+              <img id="back_button" alt="back_button" src="templates/back_button.png" />
+
+            </li>
+            <li class="list-inline-item">
+              <input type="checkbox" id="stats_cb" name="stats_cb" />
+
+              <img id="stats" alt="stats" src="templates/stats.png" />
+            </li>
+            <li class="list-inline-item">
+              <input type="checkbox" id="referance_cb" name="referance_cb" />
+
+              <img id="referance" alt="referance" src="templates/reference.png" />
+            </li>
+            <li class="list-inline-item">
+              <input type="checkbox" id="help_cb" name="help_cb" />
+
+              <img id="help" alt="help" src="templates/help.png" />
+            </li>
+            <li class="list-inline-item">
+              <input type="checkbox" id="change_arrow_cb" name="change_arrow_cb" />
+
+              <img id="change_arrow" alt="change_arrow" src="templates/change_arrow.png" />
+            </li>
+            <li class="list-inline-item">
+              <input type="checkbox" id="transition_cb" name="transition_cb" />
+              <img id="transition" alt="transition" src="templates/transition.png" />
+
+            </li>
+            <li class="list-inline-item">
+              <canvas class="style_template_canvas" id="template_canvas"></canvas>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</body>
+
+</html>
