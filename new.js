@@ -19,7 +19,9 @@ var inputElement,
   XText,
   YText,
   WText,
-  HText;
+  HText,
+  pbar,
+  pgress = 0;
 
 window.onload = function setup() {
   inputElement = document.getElementById("fileInput");
@@ -51,6 +53,8 @@ window.onload = function setup() {
   YText = document.getElementById("YText");
   WText = document.getElementById("WText");
   HText = document.getElementById("HText");
+
+  pbar = document.getElementById("pbar");
 
   inputElement.addEventListener(
     "change",
@@ -92,7 +96,7 @@ function loadImageToCanvas(imageUrl, canvasElement) {
 };
 
 function cropInputImageParameterized() {
-  var start_of_roi_x,start_of_roi_y,roi_width,roi_height;
+  var start_of_roi_x, start_of_roi_y, roi_width, roi_height;
   var image_full = cv.imread("canvasOutput");
   var image_cropped = new cv.Mat();
   // idk about the x and y coordinates but i assume rows=> y, cols=> x
@@ -112,7 +116,7 @@ function cropInputImageParameterized() {
 };
 
 function cropInputImage() {
-  var start_of_roi_x,start_of_roi_y,roi_width,roi_height;
+  var start_of_roi_x, start_of_roi_y, roi_width, roi_height;
   var image_full = cv.imread("canvasOutput");
   var image_cropped = new cv.Mat();
   // idk about the x and y coordinates but i assume rows=> y, cols=> x
@@ -220,18 +224,31 @@ function onOpenCvReady() {
   document.getElementById("statusCV").innerHTML = "OpenCV.js is ready.";
 }
 function onTessReady() {
+  //spinner.classList.remove("d-none");
+  pgress = 0;
+  pbar.style.width = `${pgress}%`
   document.getElementById("statusTS").innerHTML = "Tesseract.js worker loaded.";
 }
 function onTessDone() {
+  //spinner.classList.add("d-none");
   document.getElementById("statusTS").innerHTML = "Tesseract.js worker unloaded.";
 }
 
 var worker = new Tesseract.createWorker({
-  logger: (m)=> console.log(m),
+  //logger: (m)=> console.log(m),
+  logger: progressUpdate,
 });
 
+
+function progressUpdate(packet) {
+  if (packet.status == "recognizing text") {
+    pgress = Math.round(packet.progress*100);
+    pbar.style.width = `${pgress}%`
+    //console.log(pgress);
+  }
+};
+
 async function FunctionThatGetsText() {
-  spinner.classList.remove("d-none");
   await worker.load();
   await worker.loadLanguage('eng');
   await worker.initialize('eng');
@@ -239,11 +256,10 @@ async function FunctionThatGetsText() {
   const { data: { text } } = await worker.recognize(GetCanvasURL());//inputImage.src);
   document.getElementById('textarea').innerHTML = text;
   console.log(text);
-  spinner.classList.add("d-none");
   onTessDone();
 };
 
-async function stopWorker(){
+async function stopWorker() {
   await worker.terminate();
 }
 //add a way to call this and run this before page close.
