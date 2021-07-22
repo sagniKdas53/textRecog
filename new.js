@@ -226,14 +226,10 @@ function onTessDone() {
   document.getElementById("statusTS").innerHTML = "Tesseract.js worker unloaded.";
 }
 
-
-const { createWorker } = Tesseract;
-const worker = createWorker({
-  workerPath: "node_modules/tesseract.js/dist/worker.min.js",
-  langPath: "lang-data",
-  corePath: "node_modules/tesseract.js-core/tesseract-core.wasm.js",
-  logger: (m) => console.log(m),
+var worker = new Tesseract.createWorker({
+  logger: (m)=> console.log(m),
 });
+
 async function FunctionThatGetsText() {
   spinner.classList.remove("d-none");
   await worker.load();
