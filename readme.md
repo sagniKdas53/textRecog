@@ -1,9 +1,10 @@
-# Image recognition and Template matching in browser using OpenCV.js and tesseract.js
+# Text recognition and Template matching in browser using OpenCV.js and tesseract.js
+[![CodeFactor](https://www.codefactor.io/repository/github/sagnikdas53/textrecog/badge)](https://www.codefactor.io/repository/github/sagnikdas53/textrecog)
+
+## USAGE: 
+you can probably figure it out.
 
 ## TODO: 
 
-- [ ] fix the makebox and add a crop function too,
-- [ ] cv.imshow needs some testing
-- [ ] add the tesseract worker and test if it can detrct the image
-- [ ] us the notbooks as referece to how to crop and proceess the image.
-
+- [ ] Test if the template matching actually works
+- [ ] Find a way to  improve tesseract accuracy
